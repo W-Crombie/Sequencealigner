@@ -1,0 +1,57 @@
+
+import csv
+
+
+
+df = open('C:/Users/aelun/Documents/featuretables/MAV_feature_table.csv')
+r=csv.reader(df,delimiter=',')
+mav = [row for row in r]
+print(mav[3])
+
+
+df2 = open('C:/Users/aelun/Documents/featuretables/NCBI Feature table.csv')
+s=csv.reader(df2, delimiter=',')
+mavrso = [row for row in s]
+
+
+def rowvalidator(row):
+    if 'gene' in row or 'pseudogene' in row:
+        return True
+    else:
+     return False
+
+
+def evaluate(mav, mavrso):
+    for row1 in mav:
+        startmav = row1[7]
+        stopmav = row1[8]
+        sensemav = row1[9]
+
+        for rowrso in mavrso:
+
+            if startmav == (rowrso[7]) and stopmav == (rowrso[8]) and sensemav == (rowrso[9]):
+
+                with open("alignedsequences.csv", "a") as csvfile:
+                    datawriter = csv.writer(csvfile, delimiter=',')
+                    datawriter.writerow(row1)
+                    datawriter.writerow(rowrso)
+
+
+filteredmav = list(filter(rowvalidator, mav))
+filteredrso = list(filter(rowvalidator, mavrso))
+evaluate(filteredrso, filteredmav)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
